@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.1 2003/06/16 17:50:28 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.2 2003/07/05 04:50:57 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -72,6 +72,7 @@ BOOT:
 	GPERL_CALL_BOOT (boot_Gnome2__Canvas__PathDef);
 	GPERL_CALL_BOOT (boot_Gnome2__Canvas__RichText);
 	GPERL_CALL_BOOT (boot_Gnome2__Canvas__Util);
+	GPERL_CALL_BOOT (boot_Gnome2__Canvas__Bpath);
 
 
 SV *
