@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.16 2004/03/16 18:50:18 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.18 2004/06/02 20:00:48 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -115,28 +115,37 @@ BOOT:
 
 =head1 SYNOPSIS
 
+  use strict;
   use Gtk2 -init;
   use Gnome2::Canvas;
-  $win = Gtk2::Window->new;
-  $frame = Gtk2::Frame->new;
-  $canvas = Gnome2::Canvas->new;
-  $frame->add ($canvas);
-  $window->add ($frame);
+  my $window = Gtk2::Window->new;
+  my $scroller = Gtk2::ScrolledWindow->new;
+  my $canvas = Gnome2::Canvas->new;
+  $scroller->add ($canvas);
+  $window->add ($scroller);
+  $window->set_default_size (150, 150);
+  $canvas->set_scroll_region (0, 0, 200, 200);
   $window->show_all;
-  
-  $root = $canvas->root;
-  $item = Gnome2::Canvas::Item->new ($root, 'Gnome2::Canvas::Text',
-                                     x => $x,
-                                     y => $y,
-                                     fill_color => 'black',
-                                     font => 'Sans 14',
-                                     anchor => 'GTK_ANCHOR_NW');
-  $box = Gnome2::Canvas::Item->new ($root, 'Gnome2::Canvas::Rect',
-                                    fill_color => undef,
-                                    outline_color => 'black',
-                                    width_pixels => 0);
-  $box->signal_connect (event => \&do_box_events);
-  
+
+  my $root = $canvas->root;
+  Gnome2::Canvas::Item->new ($root, 'Gnome2::Canvas::Text',
+                             x => 20,
+                             y => 15,
+                             fill_color => 'black',
+                             font => 'Sans 14',
+                             anchor => 'GTK_ANCHOR_NW',
+                             text => 'Hello, World!');
+  my $box = Gnome2::Canvas::Item->new ($root, 'Gnome2::Canvas::Rect',
+                                       x1 => 10, y1 => 5,
+                                       x2 => 150, y2 => 135,
+                                       fill_color => 'red',
+                                       outline_color => 'black');
+  $box->lower_to_bottom;
+  $box->signal_connect (event => sub {
+          my ($item, $event) = @_;
+          warn "event ".$event->type."\n";
+  });
+
   Gtk2->main;
 
 =cut
@@ -493,6 +502,7 @@ GET_VERSION_INFO (class)
 	PUSHs (sv_2mortal (newSViv (GNOME_CANVAS_MAJOR_VERSION)));
 	PUSHs (sv_2mortal (newSViv (GNOME_CANVAS_MINOR_VERSION)));
 	PUSHs (sv_2mortal (newSViv (GNOME_CANVAS_MICRO_VERSION)));
+	PERL_UNUSED_VAR (ax);
 
 gboolean
 CHECK_VERSION (class, major, minor, micro)
