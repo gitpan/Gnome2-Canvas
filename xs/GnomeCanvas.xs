@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.4 2003/09/05 01:11:50 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.8 2003/11/10 03:18:31 rwmcfa1 Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -66,17 +66,64 @@ BOOT:
 	{
 #include "register.xsh"
 #include "boot.xsh"
+	gperl_handle_logs_for ("GnomeCanvas");
 	}
 
+#
+# there are several classes in the library which have no non-virtual
+# methods, and thus have no direct bindings.  let's declare object
+# sections for them here, so they'll show up in the documentation.
+#
+
+=for object Gnome2::Canvas::Shape - Base class for canvas shapes
+
+=cut
+
+=for object Gnome2::Canvas::Line - Lines as CanvasItems
+
+=cut
+
+=for object Gnome2::Canvas::Pixbuf - Pixbufs as CanvasItems
+
+=cut
+
+=for object Gnome2::Canvas::RE - base class for rectangles and ellipses
+
+=cut
+
+=for object Gnome2::Canvas::Rect - Rectangles as CanvasItems
+
+=cut
+
+=for object Gnome2::Canvas::Ellipse - Ellipses as CanvasItems
+
+=cut
+
+=for object Gnome2::Canvas::Widget - Gtk2::Widgets as CanvasItems
+
+=cut
+
+#
+# and now back to Gnome2::Canvas... but there's already a Gnome2::Canvas,
+# which will come from the pm file.  let's call this one Canvas_methods
+# to avoid name clashes.
+#
+
+=for object Gnome2::Canvas_methods (Gnome2::Canvas) a blurb
+=cut
 
 SV *
 members (canvas)
 	GnomeCanvas * canvas
     ALIAS:
-	aa = 1
+	aa = 0
+	pixels_per_unit = 1
+	get_pixels_per_unit = 2
     CODE:
 	switch (ix) {
-		case 1: RETVAL = newSViv (canvas->aa); break;
+	    case 0: RETVAL = newSViv (canvas->aa); break;
+	    case 1:
+	    case 2: RETVAL = newSVnv (canvas->pixels_per_unit); break;
 	}
     OUTPUT:
 	RETVAL
@@ -85,7 +132,6 @@ members (canvas)
 ##  GtkWidget *gnome_canvas_new_aa (void) 
 GtkWidget *
 gnome_canvas_new (class)
-	SV * class
     ALIAS:
 	new_aa = 1
     CODE:

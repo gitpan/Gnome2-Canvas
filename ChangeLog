@@ -1,3 +1,48 @@
+2003/11/13 23:58 (-0500) muppetman
+
+	* Makefile.PL, README, Canvas.pm: bump version to 0.34.
+	require Glib 1.01, but only Gtk2 1.00 -- we only need the docgen
+	stuff from Glib, and nothing new from Gtk2.
+
+2003/11/11 00:36 (-0500) muppetman
+
+	* MANIFEST, debian/*: remove the debian packaging files, since having
+	them in the upstream dist makes it difficult for the maintainers
+
+	* Canvas.pm: add pointer to generated docs
+
+2003/11/06 16:54 (-0500) muppetman
+
+	* xs/GnomeCanvas.xs: accessors for pixels_per_unit
+
+2003/11/06 11:37 (-0500) muppetman
+
+	* xs/GnomeCanvas.xs: route GnomeCanvas's log domains through perl's
+	warn() and croak()
+
+	* xs/GnomeCanvasItem.xs, xs/GnomeCanvasPathDef.xs,
+	xs/GnomeCanvasUtil.xs: remove type on class params so that the doc
+	shows them correctly (and so that the bindings don't waste cycles
+	on unused params)
+
+2003/11/02 14:17 muppetman
+
+	* Makefile.PL: remove the stupid atleast version checks -- Glib and
+	Gtk2 have been corrected.
+
+2003/10/29 02:00 muppetman
+
+	* Canvas.pm: bump version for next devel series.
+
+	* Makefile.PL: use the latest CVS Glib and Gtk2 features -- atleast
+	version checks, MakeHelper, doc generation, etc.
+
+	* xs/GnomeCanvas.xs: doc comments
+
+2003/09/21 20:19 rwmcfa1
+
+	* Makefile.PL: fixed bug in specfile generation
+
 2003/09/21 19:42 muppetman
 
 	* Makefile.PL perl-Gnome2-Canvas.spec.in: there was some disagreement

@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasPathDef.xs,v 1.3 2003/09/05 01:11:54 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasPathDef.xs,v 1.4 2003/11/06 15:36:54 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -40,14 +40,12 @@ BOOT:
 ##  GnomeCanvasPathDef * gnome_canvas_path_def_new (void) 
 GnomeCanvasPathDef_own *
 gnome_canvas_path_def_new (class)
-	SV * class
     C_ARGS:
 	/*void*/
 
 ####  GnomeCanvasPathDef * gnome_canvas_path_def_new_sized (gint length) 
 ##GnomeCanvasPathDef_own *
 ##gnome_canvas_path_def_new_sized (class, length)
-##	SV * class
 ##	gint length
 ##    C_ARGS:
 ##	length
@@ -92,7 +90,6 @@ gnome_canvas_path_def_duplicate (path)
 ##  GnomeCanvasPathDef * gnome_canvas_path_def_concat (const GSList * list) 
 GnomeCanvasPathDef_own *
 gnome_canvas_path_def_concat (class)
-	SV * class
     PREINIT:
 	GSList * list = NULL;
 	int i;

@@ -1,5 +1,5 @@
 #
-# $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/Canvas.pm,v 1.6 2003/09/21 23:37:45 muppetman Exp $
+# $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/Canvas.pm,v 1.9 2003/11/14 05:00:00 muppetman Exp $
 #
 
 package Gnome2::Canvas;
@@ -14,7 +14,7 @@ require DynaLoader;
 
 our @ISA = qw(DynaLoader);
 
-our $VERSION = '0.32';
+our $VERSION = '0.34';
 
 sub dl_load_flags { 0x01 }
 
@@ -78,9 +78,11 @@ join gtk-perl-list@gnome.org at lists.gnome.org.
 perl(1), Glib(3pm), Gtk2(3pm), GNOME Canvas Library Reference Manual
 http://developer.gnome.org/doc/API/2.0/libgnomecanvas/index.html
 
+Gnome2::Canvas::index(3pm) lists the generated Perl API reference PODs.
+
 =head1 AUTHOR
 
-muppet E<lt>scott@asofyet.orgE<gt>
+muppet E<lt>scott at asofyet dot orgE<gt>
 
 If you want to own this project, please let me know.
 
