@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasPathDef.xs,v 1.2 2003/07/05 04:50:57 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasPathDef.xs,v 1.3 2003/09/05 01:11:54 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -66,11 +66,6 @@ gnome_canvas_path_def_new (class)
 ##GnomeCanvasPathDef *
 ##gnome_canvas_path_def_new_from_foreign_bpath (bpath)
 ##	ArtBpath * bpath
-##
-####  void gnome_canvas_path_def_ref (GnomeCanvasPathDef * path) 
-##void
-##gnome_canvas_path_def_ref (path)
-##	GnomeCanvasPathDef * path
 
 ##  void gnome_canvas_path_def_finish (GnomeCanvasPathDef * path) 
 void
@@ -138,10 +133,6 @@ gnome_canvas_path_def_split (path)
 ##gnome_canvas_path_def_close_all (path)
 ##	const GnomeCanvasPathDef * path
 ##
-####  void gnome_canvas_path_def_unref (GnomeCanvasPathDef * path) 
-##void
-##gnome_canvas_path_def_unref (path)
-##	GnomeCanvasPathDef * path
 ##
 ####  void gnome_canvas_path_def_reset (GnomeCanvasPathDef * path) 
 ##void
@@ -246,3 +237,6 @@ gboolean
 gnome_canvas_path_def_all_closed (path)
 	GnomeCanvasPathDef * path
 
+### will not be bound
+####  void gnome_canvas_path_def_ref (GnomeCanvasPathDef * path) 
+####  void gnome_canvas_path_def_unref (GnomeCanvasPathDef * path) 
