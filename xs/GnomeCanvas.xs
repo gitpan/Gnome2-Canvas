@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.2 2003/07/05 04:50:57 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.3 2003/07/08 03:15:34 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -64,15 +64,7 @@ MODULE = Gnome2::Canvas	PACKAGE = Gnome2::Canvas	PREFIX = gnome_canvas_
 
 BOOT:
 #include "register.xsh"
-	/* we need to be careful not to use the standard boot.xsh mechanism;
-	 * because we have :'s in the package name, the current boot generator
-	 * in Gtk2::CodeGen will create an infinite loop here.  we only have
-	 * a few other modules, so let's just load them by hand. */
-	GPERL_CALL_BOOT (boot_Gnome2__Canvas__Item);
-	GPERL_CALL_BOOT (boot_Gnome2__Canvas__PathDef);
-	GPERL_CALL_BOOT (boot_Gnome2__Canvas__RichText);
-	GPERL_CALL_BOOT (boot_Gnome2__Canvas__Util);
-	GPERL_CALL_BOOT (boot_Gnome2__Canvas__Bpath);
+#include "boot.xsh"
 
 
 SV *

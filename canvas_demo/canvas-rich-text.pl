@@ -1,6 +1,8 @@
 package CanvasRichText;
 use strict;
+use utf8;
 use Gnome2::Canvas;
+use utf8;
 use constant TRUE => 1;
 use constant FALSE => 0;
 

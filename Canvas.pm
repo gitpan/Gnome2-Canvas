@@ -1,5 +1,5 @@
 #
-# $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/Canvas.pm,v 1.3 2003/07/05 04:50:51 muppetman Exp $
+# $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/Canvas.pm,v 1.4 2003/07/18 17:02:09 muppetman Exp $
 #
 
 package Gnome2::Canvas;
@@ -32,7 +32,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.26';
+our $VERSION = '0.28';
 
 sub dl_load_flags { 0x01 }
 

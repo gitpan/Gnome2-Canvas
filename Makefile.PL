@@ -1,5 +1,5 @@
 #
-# $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/Makefile.PL,v 1.3 2003/06/27 21:18:11 muppetman Exp $
+# $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/Makefile.PL,v 1.5 2003/07/18 17:02:09 muppetman Exp $
 #
 
 use 5.008;
@@ -17,7 +17,7 @@ mkdir 'build', 0777;
 # autogeneration
 #
 Gtk2::CodeGen->parse_maps ('gnomecanvasperl');
-#Gtk2::CodeGen->write_boot;
+Gtk2::CodeGen->write_boot (ignore => '^Gnome2::Canvas$');
 
 # now we're ready to start creating the makefile.
 # we need to use ExtUtils::Depends to get relevant information out of
@@ -38,7 +38,7 @@ $gnome2->save_config ('build/IFiles.pm');
 WriteMakefile(
     NAME            => 'Gnome2::Canvas',
     VERSION_FROM    => 'Canvas.pm', # finds $VERSION
-    PREREQ_PM       => {Gtk2 => 0.25}, # e.g., Module::Name => 1.1
+    PREREQ_PM       => {Gtk2 => 0.26}, # e.g., Module::Name => 1.1
     ABSTRACT_FROM   => 'Canvas.pm', # retrieve abstract from module
     XSPROTOARG      => '-noprototypes',
     $gnome2->get_makefile_vars,
