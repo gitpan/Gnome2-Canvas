@@ -1,0 +1,36 @@
+2003/06/20 12:00 muppetman
+
+	* Canvas.pm Makefile.PL README: bump version info and prepare for
+	0.24 release
+
+	* gnomecanvasperl.h: one-time-include stuff used the wrong name,
+	would prevent inclusion of gnome2perl.h (copy and paste bug - bad
+	muppet, no biscuit)
+
+2003/06/19 17:11 pcg
+
+	* t/01.t: make it actually work.
+
+2003/06/16 13:46 muppetman
+
+	* xs/GnomeCanvasUtil.xs, canvas_demo/canvas-primitives.pl,
+	canvas_demo/canvas-arrowhead.pl: use a GPerlBoxedWrapperClass override
+	to allow GnomeCanvasPoints to be implemented as simple perl array
+	references.
+
+	* Makefile.PL, MANIFEST: make sure we're ready to go out
+
+2003/06/04 23:45 muppetman
+
+	cleanup, making it ready to share with other people
+
+	* canvas_demo/canvas-curve.pl
+
+2003/06/03 13:42 muppetman
+
+	* canvas_demo/canvas-rich-text.pl
+
+2003/06/02 12:00 muppetman
+
+	started from a copy of the Gnome2-Perl module.
+
