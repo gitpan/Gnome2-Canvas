@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasUtil.xs,v 1.5 2004/02/10 06:38:38 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasUtil.xs,v 1.7 2004/08/16 02:03:12 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -153,6 +153,11 @@ gnome_canvas_get_butt_points (class, x1, y1, x2, y2, width, project)
 	PUSHs (sv_2mortal (newSVnv (by2)));
 
 ##  double gnome_canvas_polygon_to_point (double *poly, int num_points, double x, double y) 
+=for apidoc
+=for arg poly_ref (arrayref) coordinate pairs that make up the polygon
+Return the distance from the point I<$x>,I<$y> to the polygon described by
+the vertices in I<$poly_ref>, or zero if the point is inside the polygon.
+=cut
 double
 gnome_canvas_polygon_to_point (class, poly_ref, x, y)
 	SV *poly_ref
@@ -161,21 +166,23 @@ gnome_canvas_polygon_to_point (class, poly_ref, x, y)
     PREINIT:
 	double *poly;
 	AV *array;
-	SV **value;
 	int length, i;
     CODE:
 	if (! (SvRV (poly_ref) && SvTYPE (SvRV (poly_ref)) == SVt_PVAV))
-		croak ("the polygon parameter has to be a reference to an array");
+		croak ("the polygon parameter should be a reference to an "
+		       "array of coordinate pairs");
 
 	array = (AV *) SvRV (poly_ref);
-	length = av_len (array);
+	length = av_len (array) + 1;
 
-	if (length % 2 != 1)
-		croak ("the polygon array has to contain an even number of coordinates");
+	if (length % 2 != 0)
+		croak ("the polygon array must contain x,y coordinate pairs,"
+		       " so its length cannot be odd (got %d)", length);
 
-	poly = g_new0 (double, length + 1);
+	poly = g_new0 (double, length);
 
-	for (i = 0; i <= length; i += 2) {
+	for (i = 0; i < length; i += 2) {
+		SV **value;
 		value = av_fetch (array, i, 0);
 		if (value && SvOK (*value))
 			poly[i] = SvNV (*value);
@@ -185,7 +192,7 @@ gnome_canvas_polygon_to_point (class, poly_ref, x, y)
 			poly[i + 1] = SvNV (*value);
 	}
 
-	RETVAL = gnome_canvas_polygon_to_point (poly, length + 1, x, y);
+	RETVAL = gnome_canvas_polygon_to_point (poly, length/2, x, y);
 
 	g_free (poly);
     OUTPUT:
@@ -216,6 +223,9 @@ gnome_canvas_polygon_to_point (class, poly_ref, x, y)
 MODULE = Gnome2::Canvas::Util	PACKAGE = Gnome2::Canvas::Item	PREFIX = gnome_canvas_item_
 
 ##  void gnome_canvas_item_reset_bounds (GnomeCanvasItem *item) 
+=for apidoc
+Reset the bounding box of I<$item> to an empty rectangle.
+=cut
 void
 gnome_canvas_item_reset_bounds (item)
 	GnomeCanvasItem *item
@@ -244,6 +254,9 @@ gnome_canvas_item_reset_bounds (item)
 MODULE = Gnome2::Canvas::Util	PACKAGE = Gnome2::Canvas::Item	PREFIX = gnome_canvas_
 
 ##  void gnome_canvas_update_bbox (GnomeCanvasItem *item, int x1, int y1, int x2, int y2) 
+=for apidoc
+Set I<$item>'s bounding box to a new rectangle, and request a full repaint.
+=cut
 void
 gnome_canvas_update_bbox (item, x1, y1, x2, y2)
 	GnomeCanvasItem *item

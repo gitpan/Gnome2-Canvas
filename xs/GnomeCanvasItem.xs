@@ -16,12 +16,21 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasItem.xs,v 1.6 2004/02/10 06:38:38 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasItem.xs,v 1.8 2004/08/16 02:10:26 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
 MODULE = Gnome2::Canvas::Item	PACKAGE = Gnome2::Canvas::Item	PREFIX = gnome_canvas_item_
 
+=for apidoc parent
+=for signature $canvasgroup = $item->parent
+Fetch I<$item>'s parent group item.
+=cut
+
+=for apidoc
+=for signature $canvas = $item->canvas
+Fetch the Gnome2::Canvas to which I<$item> is attached.
+=cut
 SV *
 canvas (item)
 	GnomeCanvasItem * item
@@ -88,6 +97,10 @@ gnome_canvas_item_move (item, dx, dy)
 	double dy
 
 ##  void gnome_canvas_item_affine_relative (GnomeCanvasItem *item, const double affine[6]) 
+=for apidoc
+=for arg affine (arrayref) affine transformation matrix
+Combines I<$affine> with I<$item>'s current transformation.
+=cut
 void
 gnome_canvas_item_affine_relative (item, affine)
 	GnomeCanvasItem *item
@@ -96,6 +109,10 @@ gnome_canvas_item_affine_relative (item, affine)
 	item, SvArtAffine (affine)
 
 ##  void gnome_canvas_item_affine_absolute (GnomeCanvasItem *item, const double affine[6]) 
+=for apidoc
+=for arg affine (arrayref) affine transformation matrix
+Replaces I<$item>'s transformation matrix.
+=cut
 void
 gnome_canvas_item_affine_absolute (item, affine)
 	GnomeCanvasItem *item
@@ -156,20 +173,48 @@ void gnome_canvas_item_w2i (GnomeCanvasItem * item, IN_OUTLIST double x, IN_OUTL
 void gnome_canvas_item_i2w (GnomeCanvasItem *item, IN_OUTLIST double x, IN_OUTLIST double y) 
 
 ##  void gnome_canvas_item_i2w_affine (GnomeCanvasItem *item, double affine[6]) 
-void
-gnome_canvas_item_i2w_affine (item, affine)
-	GnomeCanvasItem *item
-	SV * affine
-    C_ARGS:
-	item, SvArtAffine (affine)
-
 ##  void gnome_canvas_item_i2c_affine (GnomeCanvasItem *item, double affine[6]) 
-void
-gnome_canvas_item_i2c_affine (item, affine)
+=for apidoc i2c_affine
+=for signature $affine = $item->i2c_affine
+=for arg a (__hide__)
+Fetch the affine transform that converts from item-relative coordinates to
+canvas pixel coordinates.
+
+Note: This method was completely broken for all
+$Gnome2::Canvas::VERSION < 1.002.
+=cut
+
+=for apidoc
+=for signature $affine = $item->i2w_affine
+=for arg a (__hide__)
+Fetch the affine transform that converts from item's coordinate system to
+world coordinates.
+
+Note: This method was completely broken for all
+$Gnome2::Canvas::VERSION < 1.002.
+=cut
+SV *
+gnome_canvas_item_i2w_affine (item, a=NULL)
 	GnomeCanvasItem *item
-	SV * affine
-    C_ARGS:
-	item, SvArtAffine (affine)
+	SV * a
+    ALIAS:
+	i2c_affine = 1
+    PREINIT:
+	double affine[6];
+    CODE:
+	if (a != NULL || items > 1)
+		warn ("Gnome2::Canvas::%s() was broken before 1.002;"
+		      " the second parameter does nothing (see the Gnome2::"
+		      "Canvas manpage)",
+		      ix == 0 ? "i2w_affine" : "i2c_affine");
+	if (ix == 1)
+		gnome_canvas_item_i2c_affine (item, affine);
+	else
+		gnome_canvas_item_i2w_affine (item, affine);
+	RETVAL = newSVArtAffine (affine);
+    OUTPUT:
+	RETVAL
+
 
 ##  void gnome_canvas_item_reparent (GnomeCanvasItem *item, GnomeCanvasGroup *new_group) 
 void

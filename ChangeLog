@@ -1,3 +1,39 @@
+2004/08/15 22:11 (-0400) muppetman
+
+	* Canvas.pm, NEWS, README: stable bugfix release 1.002
+
+2004/08/15 22:07 (-0400) muppetman
+
+	* t/GnomeCanvas.t, t/GnomeCanvasItem.t, xs/GnomeCanvas.xs,
+	xs/GnomeCanvasItem.xs: fix the unusably broken bindings for
+	Gnome2::Canvas::w2c_affine(), Gnome2::Canvas::Item::i2w_affine(),
+	and Gnome2::Canvas::Item::i2c_affine().  we retain compatibility
+	with the broken signature, and include tests for both broken and
+	fixed.
+
+2004/08/15 22:01 (-0400) muppetman
+
+	* xs/GnomeCanvasUtil.xs: minor doc updates.
+
+2004/08/15 19:37 (-0400) muppetman
+
+	* xs/GnomeCanvasUtil.xs: fixed mysterious failure on darwin of
+	polygon_to_point(); was passing the wrong length value to the C
+	function.  don't know how it worked in the first place.
+
+2004/08/13 22:33 (-0400) muppetman
+
+	* Canvas.pm: don't set dl_load_flags on darwin.
+
+2004/08/13 22:22 (-0400) muppetman
+
+	* xs/GnomeCanvasItem.xs: apidoc fixes
+
+2004/08/13 07:49 (-0400) muppetman
+
+	* xs/GnomeCanvas.xs: force generation of docs for
+	Gnome2::Canvas::Text, which has properties but no methods.
+
 2004/06/06 11:52 (-0400) muppetman
 
 	* Canvas.pm, NEWS, README: stable release 1.001

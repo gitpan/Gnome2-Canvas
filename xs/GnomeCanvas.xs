@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.18 2004/06/02 20:00:48 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvas.xs,v 1.20 2004/08/16 02:10:26 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -96,6 +96,10 @@ BOOT:
 =cut
 
 =for object Gnome2::Canvas::Ellipse - Ellipses as CanvasItems
+
+=cut
+
+=for object Gnome2::Canvas::Text - Text as CanvasItems
 
 =cut
 
@@ -416,12 +420,30 @@ gnome_canvas_request_redraw (canvas, x1, y1, x2, y2)
 	int y2
 
 ##  void gnome_canvas_w2c_affine (GnomeCanvas *canvas, double affine[6]) 
-void
-gnome_canvas_w2c_affine (canvas, a)
+=for apidoc
+=for signature $affine = $canvas->w2c_affine
+=for arg a (__hide__)
+Fetch the affine transform that converts from world coordinates to canvas
+pixel coordinates.
+
+Note: This method was completely broken for all
+$Gnome2::Canvas::VERSION < 1.002.
+=cut
+SV *
+gnome_canvas_w2c_affine (canvas, a=NULL)
 	GnomeCanvas *canvas
 	SV * a
-    C_ARGS:
-	canvas, SvArtAffine (a)
+    PREINIT:
+	double affine[6];
+    CODE:
+	if (a != NULL || items > 1)
+		warn ("Gnome2::Canvas::w2c_affine() was broken before 1.002;"
+		      " the second parameter does nothing (see the Gnome2::"
+		      "Canvas manpage)");
+	gnome_canvas_w2c_affine (canvas, affine);
+	RETVAL = newSVArtAffine (affine);
+    OUTPUT:
+	RETVAL
 
 ##  void gnome_canvas_w2c (GnomeCanvas *canvas, double wx, double wy, int *cx, int *cy) 
 ##  void gnome_canvas_w2c_d (GnomeCanvas *canvas, double wx, double wy, double *cx, double *cy) 
