@@ -16,27 +16,17 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/gnomecanvasperl.h,v 1.4 2004/03/16 05:57:39 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasShape.xs,v 1.1 2003/12/05 05:26:41 muppetman Exp $
  */
+#include "gnomecanvasperl.h"
 
-#ifndef _GNOMECANVASPERL_H_
-#define _GNOMECANVASPERL_H_
+MODULE = Gnome2::Canvas::Shape	PACKAGE = Gnome2::Canvas::Shape	PREFIX = gnome_canvas_shape_
 
-#include <gtk2perl.h>
-#include <libgnomecanvas/libgnomecanvas.h>
+void
+gnome_canvas_shape_set_path_def (shape, path_def)
+	GnomeCanvasShape * shape
+	GnomeCanvasPathDef * path_def
 
-#ifndef GNOME_TYPE_CANVAS_PATH_DEF
-  /* custom boxed wrapper for GnomeCanvasPathDef, since the library doesn't 
-   * supply one. */
-# define GNOME_TYPE_CANVAS_PATH_DEF	(gnomecanvasperl_canvas_path_def_get_type())
-  GType gnomecanvasperl_canvas_path_def_get_type (void) G_GNUC_CONST;
-#endif /* not defined GNOME_TYPE_CANVAS_PATH_DEF */
-
-#include "gnomecanvasperl-autogen.h"
-#include "gnomecanvasperl-version.h"
-
-/* special handling for libart affine transform arrays */
-SV * newSVArtAffine (double affine[6]);
-double * SvArtAffine (SV * sv);
-
-#endif /* _GNOMECANVASPERL_H_ */
+GnomeCanvasPathDef_copy *
+gnome_canvas_shape_get_path_def (shape)
+	GnomeCanvasShape * shape

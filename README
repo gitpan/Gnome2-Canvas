@@ -1,5 +1,5 @@
 
-Gnome2::Canvas version 0.34
+Gnome2::Canvas version 1.00
 ===========================
 
 The Gnome2::Canvas module allows a perl developer to use the GnomeCanvas
@@ -37,7 +37,9 @@ perl how to get to this library directory so you can use it; there are three
 ways:
 
   in your environment (the easiest):
-    PERL5LIB=/some/other/place/lib/perl5/site_perl:$PERL5LIB
+    # assuming a bourne-style shell
+    PERL5LIB=/some/other/place/lib/perl5/site_perl
+    export PERL5LIB
 
   on the perl command line:
     perl -I /some/other/place/lib/perl5/site_perl yourscript
@@ -51,19 +53,19 @@ DEPENDENCIES
 This module requires these other modules and libraries:
 
   perl >= 5.8.0
-  Glib >= 1.01 (perl module and requisite C libraries)
-  Gtk2 >= 1.00 (perl module and requisite C libraries)
+  Glib >= 1.040 (perl module and requisite C libraries)
+  Gtk2 >= 1.040 (perl module and requisite C libraries)
   libgnomecanvas > 2.x (C library)
 
 In order to build it from source, you'll also need
 
-  ExtUtils::Depends >= 0.1
-  ExtUtils::PkgConfig >= 1.00
+  ExtUtils::Depends >= 0.2
+  ExtUtils::PkgConfig >= 1.03
 
 
-COPYRIGHT AND LICENCE
+COPYRIGHT AND LICENSE
 
-Copyright (C) 2003 by the gtk2-perl team (see the file AUTHORS for a
+Copyright (C) 2003-2004 by the gtk2-perl team (see the file AUTHORS for a
 complete list)
 
 This library is free software; you can redistribute it and/or

@@ -16,28 +16,32 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasItem.xs,v 1.2 2003/11/06 15:36:54 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasItem.xs,v 1.6 2004/02/10 06:38:38 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
 MODULE = Gnome2::Canvas::Item	PACKAGE = Gnome2::Canvas::Item	PREFIX = gnome_canvas_item_
 
 SV *
-members (item)
+canvas (item)
 	GnomeCanvasItem * item
     ALIAS:
-	canvas = 1
-	parent = 2
+	parent = 1
     CODE:
+	RETVAL = NULL;
 	switch (ix) {
-		case 1: RETVAL = newSVGnomeCanvas (item->canvas); break;
-		case 2: RETVAL = newSVGnomeCanvasGroup_ornull (item->parent); break;
+	    case 0: RETVAL = newSVGnomeCanvas (item->canvas); break;
+	    case 1: RETVAL = newSVGnomeCanvasGroup_ornull (item->parent); break;
 	}
     OUTPUT:
 	RETVAL
 
 
 ##  GnomeCanvasItem *gnome_canvas_item_new (GnomeCanvasGroup *parent, GType type, const gchar *first_arg_name, ...) 
+=for apidoc
+=for arg ... property name => value pairs
+Factory constructor for Gnome2::Canvas::Item subclasses.
+=cut
 GnomeCanvasItem *
 gnome_canvas_item_new (class, parent, object_class, ...)
 	GnomeCanvasGroup *parent
@@ -132,10 +136,10 @@ gnome_canvas_item_hide (item)
 	GnomeCanvasItem *item
 
 ##  int gnome_canvas_item_grab (GnomeCanvasItem *item, unsigned int event_mask, GdkCursor *cursor, guint32 etime) 
-int
+GdkGrabStatus
 gnome_canvas_item_grab (item, event_mask, cursor, etime=GDK_CURRENT_TIME)
 	GnomeCanvasItem *item
-	unsigned int event_mask
+	GdkEventMask event_mask
 	GdkCursor *cursor
 	guint32 etime
 

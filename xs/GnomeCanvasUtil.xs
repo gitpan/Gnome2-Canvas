@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasUtil.xs,v 1.2 2003/11/06 15:36:54 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasUtil.xs,v 1.5 2004/02/10 06:38:38 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -104,11 +104,10 @@ BOOT:
 
 MODULE = Gnome2::Canvas::Util	PACKAGE = Gnome2::Canvas	PREFIX = gnome_canvas_
 
-=for object Gnome2::Canvas_methods
-
-=cut
-
 ##  int gnome_canvas_get_miter_points (double x1, double y1, double x2, double y2, double x3, double y3, double width, double *mx1, double *my1, double *mx2, double *my2) 
+=for apidoc
+=for signature ($mx1, $my1, $mx2, $my2) = Gnome2::Canvas->get_miter_points ($x1, $y1, $x2, $y2, $x3, $y3, $width)
+=cut
 void
 gnome_canvas_get_miter_points (class, x1, y1, x2, y2, x3, y3, width)
 	double x1
@@ -131,6 +130,9 @@ gnome_canvas_get_miter_points (class, x1, y1, x2, y2, x3, y3, width)
 	PUSHs (sv_2mortal (newSVnv (my2)));
 
 ##  void gnome_canvas_get_butt_points (double x1, double y1, double x2, double y2, double width, int project, double *bx1, double *by1, double *bx2, double *by2) 
+=for apidoc
+=for signature ($bx1, $by1, $bx2, $by2) = Gnome2::Canvas->get_butt_points ($x1, $y1, $x2, $y2, $width, $project)
+=cut
 void
 gnome_canvas_get_butt_points (class, x1, y1, x2, y2, width, project)
 	double x1
@@ -150,14 +152,45 @@ gnome_canvas_get_butt_points (class, x1, y1, x2, y2, width, project)
 	PUSHs (sv_2mortal (newSVnv (bx2)));
 	PUSHs (sv_2mortal (newSVnv (by2)));
 
-###  double gnome_canvas_polygon_to_point (double *poly, int num_points, double x, double y) 
-#double
-#gnome_canvas_polygon_to_point (poly, num_points, x, y)
-#	double *poly
-#	int num_points
-#	double x
-#	double y
-#
+##  double gnome_canvas_polygon_to_point (double *poly, int num_points, double x, double y) 
+double
+gnome_canvas_polygon_to_point (class, poly_ref, x, y)
+	SV *poly_ref
+	double x
+	double y
+    PREINIT:
+	double *poly;
+	AV *array;
+	SV **value;
+	int length, i;
+    CODE:
+	if (! (SvRV (poly_ref) && SvTYPE (SvRV (poly_ref)) == SVt_PVAV))
+		croak ("the polygon parameter has to be a reference to an array");
+
+	array = (AV *) SvRV (poly_ref);
+	length = av_len (array);
+
+	if (length % 2 != 1)
+		croak ("the polygon array has to contain an even number of coordinates");
+
+	poly = g_new0 (double, length + 1);
+
+	for (i = 0; i <= length; i += 2) {
+		value = av_fetch (array, i, 0);
+		if (value && SvOK (*value))
+			poly[i] = SvNV (*value);
+
+		value = av_fetch (array, i + 1, 0);
+		if (value && SvOK (*value))
+			poly[i + 1] = SvNV (*value);
+	}
+
+	RETVAL = gnome_canvas_polygon_to_point (poly, length + 1, x, y);
+
+	g_free (poly);
+    OUTPUT:
+	RETVAL
+
 ###  void gnome_canvas_render_svp (GnomeCanvasBuf *buf, ArtSVP *svp, guint32 rgba) 
 #void
 #gnome_canvas_render_svp (buf, svp, rgba)

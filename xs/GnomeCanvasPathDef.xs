@@ -16,9 +16,23 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasPathDef.xs,v 1.4 2003/11/06 15:36:54 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasPathDef.xs,v 1.8 2004/02/10 06:38:38 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
+
+
+/*
+ * if/when libgnomecanvas provides a boxed wrapper for GnomeCanvasPathDef,
+ * we'll have to put these two functions behind version guards.
+ */
+
+static GnomeCanvasPathDef *
+path_def_boxed_copy (GnomeCanvasPathDef * path_def)
+{
+	if (path_def)
+		gnome_canvas_path_def_ref (path_def);
+	return path_def;
+}
 
 GType
 gnomecanvasperl_canvas_path_def_get_type (void)
@@ -26,10 +40,11 @@ gnomecanvasperl_canvas_path_def_get_type (void)
 	static GType id = 0;
 	if (!id)
 		id = g_boxed_type_register_static ("GnomeCanvasPathDef",
-		              (GBoxedCopyFunc) gnome_canvas_path_def_duplicate,
+		              (GBoxedCopyFunc) path_def_boxed_copy,
 		              (GBoxedFreeFunc) gnome_canvas_path_def_unref);
 	return id;
 }
+
 
 MODULE = Gnome2::Canvas::PathDef	PACKAGE = Gnome2::Canvas::PathDef	PREFIX = gnome_canvas_path_def_
 
@@ -43,13 +58,13 @@ gnome_canvas_path_def_new (class)
     C_ARGS:
 	/*void*/
 
-####  GnomeCanvasPathDef * gnome_canvas_path_def_new_sized (gint length) 
-##GnomeCanvasPathDef_own *
-##gnome_canvas_path_def_new_sized (class, length)
-##	gint length
-##    C_ARGS:
-##	length
-##
+##  GnomeCanvasPathDef * gnome_canvas_path_def_new_sized (gint length) 
+GnomeCanvasPathDef_own *
+gnome_canvas_path_def_new_sized (class, length)
+	gint length
+    C_ARGS:
+	length
+
 ####  GnomeCanvasPathDef * gnome_canvas_path_def_new_from_bpath (ArtBpath * bpath) 
 ##GnomeCanvasPathDef *
 ##gnome_canvas_path_def_new_from_bpath (bpath)
@@ -70,17 +85,23 @@ void
 gnome_canvas_path_def_finish (path)
 	GnomeCanvasPathDef * path
 
-####  void gnome_canvas_path_def_ensure_space (GnomeCanvasPathDef * path, gint space) 
-##void
-##gnome_canvas_path_def_ensure_space (path, space)
-##	GnomeCanvasPathDef * path
-##	gint space
-##
+##  void gnome_canvas_path_def_ensure_space (GnomeCanvasPathDef * path, gint space) 
+void
+gnome_canvas_path_def_ensure_space (path, space)
+	GnomeCanvasPathDef * path
+	gint space
+
 ####  void gnome_canvas_path_def_copy (GnomeCanvasPathDef * dst, const GnomeCanvasPathDef * src) 
-##void
-##gnome_canvas_path_def_copy (dst, src)
-##	GnomeCanvasPathDef * dst
-##	const GnomeCanvasPathDef * src
+=for apidoc
+Copy the path from I<$src> into I<$dst>.
+
+Note: this method has very different semantics than the copy provided
+by Glib::Boxed.   C<duplicate> is the analog there.
+=cut
+void
+gnome_canvas_path_def_copy (dst, src)
+	GnomeCanvasPathDef * dst
+	const GnomeCanvasPathDef * src
 
 ##  GnomeCanvasPathDef * gnome_canvas_path_def_duplicate (const GnomeCanvasPathDef * path) 
 GnomeCanvasPathDef_own *
@@ -88,8 +109,11 @@ gnome_canvas_path_def_duplicate (path)
 	GnomeCanvasPathDef * path
 
 ##  GnomeCanvasPathDef * gnome_canvas_path_def_concat (const GSList * list) 
+=for apidoc
+=for arg ... Gnome2::Canvas::PathDef objects to concatenate
+=cut
 GnomeCanvasPathDef_own *
-gnome_canvas_path_def_concat (class)
+gnome_canvas_path_def_concat (class, ...)
     PREINIT:
 	GSList * list = NULL;
 	int i;
@@ -103,6 +127,9 @@ gnome_canvas_path_def_concat (class)
 	g_slist_free (list);
 
 ####  GSList * gnome_canvas_path_def_split (const GnomeCanvasPathDef * path) 
+=for apidoc
+=for signature @pathdefs = $path->split
+=cut
 void
 gnome_canvas_path_def_split (path)
 	GnomeCanvasPathDef * path
@@ -115,26 +142,26 @@ gnome_canvas_path_def_split (path)
 	g_slist_free (list);
 	
 
-####  GnomeCanvasPathDef * gnome_canvas_path_def_open_parts (const GnomeCanvasPathDef * path) 
-##GnomeCanvasPathDef *
-##gnome_canvas_path_def_open_parts (path)
-##	const GnomeCanvasPathDef * path
-##
-####  GnomeCanvasPathDef * gnome_canvas_path_def_closed_parts (const GnomeCanvasPathDef * path) 
-##GnomeCanvasPathDef *
-##gnome_canvas_path_def_closed_parts (path)
-##	const GnomeCanvasPathDef * path
-##
-####  GnomeCanvasPathDef * gnome_canvas_path_def_close_all (const GnomeCanvasPathDef * path) 
-##GnomeCanvasPathDef *
-##gnome_canvas_path_def_close_all (path)
-##	const GnomeCanvasPathDef * path
-##
-##
-####  void gnome_canvas_path_def_reset (GnomeCanvasPathDef * path) 
-##void
-##gnome_canvas_path_def_reset (path)
-##	GnomeCanvasPathDef * path
+##  GnomeCanvasPathDef * gnome_canvas_path_def_open_parts (const GnomeCanvasPathDef * path) 
+GnomeCanvasPathDef_own *
+gnome_canvas_path_def_open_parts (path)
+	const GnomeCanvasPathDef * path
+
+##  GnomeCanvasPathDef * gnome_canvas_path_def_closed_parts (const GnomeCanvasPathDef * path) 
+GnomeCanvasPathDef_own *
+gnome_canvas_path_def_closed_parts (path)
+	const GnomeCanvasPathDef * path
+
+##  GnomeCanvasPathDef * gnome_canvas_path_def_close_all (const GnomeCanvasPathDef * path) 
+GnomeCanvasPathDef_own *
+gnome_canvas_path_def_close_all (path)
+	const GnomeCanvasPathDef * path
+
+
+##  void gnome_canvas_path_def_reset (GnomeCanvasPathDef * path) 
+void
+gnome_canvas_path_def_reset (path)
+	GnomeCanvasPathDef * path
 
 ##  void gnome_canvas_path_def_moveto (GnomeCanvasPathDef * path, gdouble x, gdouble y) 
 void

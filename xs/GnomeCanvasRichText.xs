@@ -16,7 +16,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
  * Boston, MA  02111-1307  USA.
  *
- * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasRichText.xs,v 1.1 2003/06/16 17:50:28 muppetman Exp $
+ * $Header: /cvsroot/gtk2-perl/gtk2-perl-xs/GnomeCanvas/xs/GnomeCanvasRichText.xs,v 1.2 2003/12/05 05:26:41 muppetman Exp $
  */
 #include "gnomecanvasperl.h"
 
@@ -63,7 +63,7 @@ gnome_canvas_rich_text_get_iter_location (text, iter)
 	
 
 ##  void gnome_canvas_rich_text_get_iter_at_location (GnomeCanvasRichText *text, GtkTextIter *iter, gint x, gint y) 
-GtkTextIter_own *
+GtkTextIter_copy *
 gnome_canvas_rich_text_get_iter_at_location (text, x, y)
 	GnomeCanvasRichText *text
 	gint x

@@ -1,8 +1,7 @@
 package CanvasArrowhead;
 use strict;
+use Glib qw(TRUE FALSE);
 use Gnome2::Canvas;
-use constant TRUE => 1;
-use constant FALSE => 0;
 
 use constant LEFT            => 50.0;
 use constant RIGHT           => 350.0;
@@ -147,16 +146,12 @@ sub highlight_box {
 
 	} elsif ($event->type eq 'leave-notify') {
 		$item->set (fill_color => undef)
-			unless grep {/button1-mask/} @{ $event->state };
-		#if (!($event->state & GDK_BUTTON1_MASK))
+			unless $event->state & 'button1-mask';
 
 	} elsif ($event->type eq 'button-press') {
-		# for some reason, using the grab here causes things not to
-		# work correctly --- the cursor gets set, but no more events
-		# get in here.
-#		my $fleur = Gtk2::Gdk::Cursor->new ('fleur');
-#		$item->grab ([qw/pointer-motion-mask button-release-mask/],
-#		             $fleur, $event->time); #event->button.time);
+		$item->grab ([qw/pointer-motion-mask button-release-mask/],
+		             Gtk2::Gdk::Cursor->new ('fleur'),
+		             $event->time);
 
 	} elsif ($event->type eq 'button-release') {
 		$item->ungrab ($event->time);
@@ -179,16 +174,11 @@ sub create_drag_box {
 
 sub width_event {
 	my ($item, $event) = @_;
-#	int y;
-#	int width;
 
-#	if ((event->type != GDK_MOTION_NOTIFY) || !(event->motion.state & GDK_BUTTON1_MASK))
-#		return FALSE;
 	return FALSE
 		if (($event->type ne 'motion-notify') || 
-		    !(grep {/button1-mask/} @{ $event->state }));
+		    !($event->state >= 'button1-mask'));
 
-#	y = event->motion.y;
 	my $width = (MIDDLE - $event->y) / 5;
 	return FALSE
 		if $width < 0;
@@ -204,7 +194,7 @@ sub shape_a_event {
 
 	return FALSE
 		if (($event->type ne 'motion-notify') || 
-		    !(grep {/button1-mask/} @{ $event->state }));
+		    !($event->state >= 'button1-mask'));
 
 	my $shape_a = (RIGHT - $event->x) / 10;
 	return FALSE if (($shape_a < 0) || ($shape_a > 30));
@@ -218,11 +208,9 @@ sub shape_a_event {
 sub shape_b_c_event {
 	my ($item, $event) = @_;
 
-#	if ((event->type != GDK_MOTION_NOTIFY) || !(event->motion.state & GDK_BUTTON1_MASK))
-#		return FALSE;
 	return FALSE
 		if (($event->type ne 'motion-notify') || 
-		    !(grep {/button1-mask/} @{ $event->state }));
+		    !($event->state >= 'button1-mask'));
 
 	my $change = FALSE;
 
